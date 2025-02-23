@@ -1,0 +1,2 @@
+class ProductsDomainServices:
+    pass
