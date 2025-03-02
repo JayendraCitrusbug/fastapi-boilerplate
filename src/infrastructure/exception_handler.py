@@ -1,10 +1,10 @@
-from dataclasses import dataclass
+import json
 
-from fastapi import HTTPException, status
+from fastapi import status
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 
-@dataclass(frozen=True)
-class BaseHTTPException(HTTPException):
+class BaseHTTPException(StarletteHTTPException):
     """
     Custom exception class to handle HTTP errors in a structured way.
     """
@@ -16,8 +16,12 @@ class BaseHTTPException(HTTPException):
     ):
         super().__init__(
             status_code=status_code,
-            detail={
-                "success": False,
-                "message": message,
-            },
+            detail=json.dumps(
+                {
+                    "success": False,
+                    "status_code": status_code,
+                    "message": message,
+                    "data": None,
+                }
+            ),
         )

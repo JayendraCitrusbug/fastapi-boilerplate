@@ -1,9 +1,12 @@
+import json
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from config.settings import app_settings
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from config.settings import app_settings
 from src.infrastructure.middleware import UUIDMiddleware
 from src.routers.products import router as products_router
 
@@ -41,6 +44,24 @@ app.add_middleware(
 )
 
 app.add_middleware(UUIDMiddleware)
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    """
+    This exception handler catches StarletteHTTPException exceptions and returns a JSONResponse
+    with a status code and a JSON body containing the error detail.
+
+    :param request: The incoming request
+    :param exc: The StarletteHTTPException exception
+    :return: A JSONResponse with a status code and a JSON body containing the error detail
+    """
+
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=json.loads(exc.detail),
+    )
+
 
 app.include_router(products_router)
 

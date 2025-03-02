@@ -3,6 +3,8 @@ from typing import Any, Optional
 from fastapi import status
 from fastapi.responses import JSONResponse
 
+from src.infrastructure.exception_handler import BaseHTTPException
+
 
 class ResponseHandler:
     """
@@ -22,6 +24,7 @@ class ResponseHandler:
             status_code=status_code,
             content={
                 "success": True,
+                "status_code": status_code,
                 "message": message,
                 "data": data,
             },
@@ -29,17 +32,26 @@ class ResponseHandler:
 
     @staticmethod
     def error(
+        exception: Exception,
         status_code: int = status.HTTP_500_INTERNAL_SERVER_ERROR,
         message: str = "Something went wrong",
-        path: str = "",
     ) -> JSONResponse:
         """
         Standardized error response.
         """
-        return JSONResponse(
-            status_code=status_code,
-            content={
-                "success": False,
-                "message": message,
-            },
+
+        if isinstance(exception, BaseHTTPException):
+            raise exception
+
+        print(
+            "******************************************************************** EXCEPTION STARTED ********************************************************************"
         )
+        print(f"Exception: {str(exception)}")
+        print(
+            f"File path: {exception.__traceback__.tb_frame.f_code.co_filename}: {exception.__traceback__.tb_lineno}"
+        )
+        print(
+            "******************************************************************** EXCEPTION ENDED ********************************************************************"
+        )
+
+        raise BaseHTTPException(status_code=status_code, message=message)
