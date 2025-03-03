@@ -64,7 +64,7 @@ class DatabaseService:
 db_service = DatabaseService(
     database_name="boilerplate_db",
     user="postgres",
-    password="2589",
+    password="Citrusbug",
     host="localhost",
     port="5432",
     environment="DEVELOPMENT",

@@ -1,6 +1,7 @@
 from typing import Any, Optional
 
 from fastapi import status
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from src.infrastructure.exception_handler import BaseHTTPException
@@ -22,12 +23,14 @@ class ResponseHandler:
         """
         return JSONResponse(
             status_code=status_code,
-            content={
-                "success": True,
-                "status_code": status_code,
-                "message": message,
-                "data": data,
-            },
+            content=jsonable_encoder(
+                {
+                    "success": True,
+                    "status_code": status_code,
+                    "message": message,
+                    "data": data,
+                }
+            ),
         )
 
     @staticmethod

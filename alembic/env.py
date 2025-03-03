@@ -26,12 +26,6 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-# Update database url for alembic
-config.set_main_option(
-    "sqlalchemy.url",
-    "postgresql://postgres:2589@localhost:5432/boilerplate_db",
-)
-
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
