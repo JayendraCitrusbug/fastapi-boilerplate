@@ -121,7 +121,6 @@ class ProductDomainServices:
 
         try:
             product = self.__get_product_repo().get(product_id)
-            print("#############3", product)
             return product
         except Exception as e:
             return ResponseHandler.error(exception=e)
@@ -145,7 +144,9 @@ class ProductDomainServices:
         except Exception as e:
             return ResponseHandler.error(exception=e)
 
-    def update_product_by_id(self, product_id: uuid.UUID, data: UpdateProductRequestSchema):
+    def update_product_by_id(
+        self, product_id: uuid.UUID, data: UpdateProductRequestSchema
+    ):
         """
         Method to update a product by id.
 

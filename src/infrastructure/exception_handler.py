@@ -25,3 +25,12 @@ class BaseHTTPException(StarletteHTTPException):
                 }
             ),
         )
+
+
+class ProductNotFoundException(BaseHTTPException):
+    def __init__(
+        self,
+        message: str = "Product not found",
+        status_code: int = status.HTTP_400_BAD_REQUEST,
+    ):
+        super().__init__(message=message, status_code=status_code)

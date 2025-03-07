@@ -1,9 +1,7 @@
 import uuid
 
-from fastapi import status
-
 from src.domain.products.services import ProductDataClass, ProductDomainServices
-from src.infrastructure.exception_handler import BaseHTTPException
+from src.infrastructure.exception_handler import ProductNotFoundException
 from src.infrastructure.response_handler import ResponseHandler
 from src.schema.products import CreateProductRequestSchema, UpdateProductRequestSchema
 
@@ -69,10 +67,7 @@ class ProductAppServices:
 
         try:
             if raise_exception:
-                raise BaseHTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    message="Product with provided ID not found",
-                )
+                raise ProductNotFoundException()
 
             product = self.product_domain_services.get_product_by_id(
                 product_id=product_id

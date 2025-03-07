@@ -45,7 +45,8 @@ async def get_product_by_id(product_id: str):
     """
     product_app_services = ProductAppServices()
     return await product_app_services.get_product_details_by_id(
-        product_id=product_id, raise_exception=True
+        product_id=product_id,
+        raise_exception=False,
     )
 
 
